@@ -6,6 +6,8 @@
     padding-left: 10px;
     background-color: red;
     word-break: break-all;
+    font-size: xx-large;
+    line-height: 40px;
   }
   /*
   @media (max-width: 480px) {
@@ -31,8 +33,6 @@
 </div>
 <a href='#' onclick='slider.prev();return false;'>●</a>
 <a href='#' onclick='slider.next();return false;'>●</a>
-
-<%= request.env["HTTP_USER_AGENT"] %>
 
 <script>
   var slider = new Swipe(document.getElementById('slider'));
