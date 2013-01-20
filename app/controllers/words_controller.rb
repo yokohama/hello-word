@@ -7,6 +7,10 @@ class WordsController < ApplicationController
     @word = Word.find(params[:id])
   end
 
+  def swipe
+    @words = Word.all
+  end
+
   def new
     @word = Word.new
   end
@@ -26,6 +30,11 @@ class WordsController < ApplicationController
 
   def update
     @word = Word.find(params[:id])
+    if @word.update_attributes(params[:word])
+      redirect_to word_path(@word)
+    else
+      render action: "edit"
+    end
   end
 
   def destroy

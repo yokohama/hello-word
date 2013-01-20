@@ -13,6 +13,7 @@
     <![endif]-->
 
     <%= stylesheet_link_tag "application", :media => "all" %>
+    <%= javascript_include_tag "application" %>
 
     <!-- For third-generation iPad with high-resolution Retina display: -->
     <!-- Size should be 144 x 144 pixels -->
@@ -44,12 +45,11 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </a>
-          <a class="brand" href="#">#H</a>
+          <a class="brand" href="/">#H</a>
           <div class="container-fluid nav-collapse">
             <ul class="nav">
-              <li><%= link_to "Link1", "/path1"  %></li>
-              <li><%= link_to "Link2", "/path2"  %></li>
-              <li><%= link_to "Link3", "/path3"  %></li>
+              <li><%= link_to "+", "/words/new"  %></li>
+              <li><%= link_to "info", "/"  %></li>
             </ul>
           </div><!--/.nav-collapse -->
         </div>
@@ -57,23 +57,18 @@
     </div>
 
     <div class="container-fluid">
-      <div class="row-fluid">
-        <div class="span9">
-          <%= bootstrap_flash %>
-          <%= yield %>
-        </div>
-      </div><!--/row-->
-
+      <%= yield %>
+      <!--
       <footer>
         <p>&copy; Company 2012</p>
       </footer>
-
+      -->
     </div> <!-- /container -->
 
     <!-- Javascripts
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <%= javascript_include_tag "application" %>
+    <%#= javascript_include_tag "application" %>
 
   </body>
 </html>

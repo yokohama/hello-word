@@ -1,3 +1,8 @@
 Helloword::Application.routes.draw do
-  resources :words
+  root :to => "words#index"
+  resources :words do
+    collection do
+      get :swipe
+    end
+  end
 end
