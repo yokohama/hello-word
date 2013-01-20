@@ -1,11 +1,19 @@
 <h1>単語一覧</h1>
 
+<div>
 <center>
   <%= link_to "START", swipe_words_path, class: 'btn btn-primary' %>
 </center>
+</div>
 
+<br />
+
+<div>
+<p>登録されている単語</p>
+<hr />
 <ul>
   <% @words.each do |word| %>
     <li><%= link_to word.keyword, word %></li>
   <% end %>
 </ul>
+</div>

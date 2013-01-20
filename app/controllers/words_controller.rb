@@ -40,5 +40,6 @@ class WordsController < ApplicationController
   def destroy
     @word = Word.find(params[:id])
     @word.destroy
+    redirect_to words_path
   end
 end
