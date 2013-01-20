@@ -1,20 +1,34 @@
 <style>
   #moge {
-    height:200px;
-    margin-right:10px;
-    margin-left:10px;
-    padding-left:10px;
-    background-color:red;
+    height: 200px;
+    margin-right: 10px;
+    margin-left: 10px;
+    padding-left: 10px;
+    background-color: red;
+    word-break: break-all;
   }
+  /*
+  @media (max-width: 480px) {
+    #moge {
+      background-color:black;
+    }
+  }
+  @media (max-width: 320px) {
+    #moge {
+      background-color:black;
+    }
+  }
+  */
+
 </style>
-  <div id="slider">
-    <ul>
-      <% @words.each_with_index do |w, i| %>
-        <div style="<%= i == 0 ? 'display:block' : 'display:none' %>"><div id="moge"><%= w.keyword %></div></div>
-        <!--<div style="<%= i == 0 ? 'display:block' : 'display:none' %>"><div class="hero-unit"><%= w.keyword %></div></div>-->
-      <% end %>
-    </ul>
-  </div>
+
+<div id="slider">
+  <ul>
+    <% @words.each_with_index do |w, i| %>
+      <div style="<%= i == 0 ? 'display:block' : 'display:none' %>"><div id="moge"><%= w.keyword %></div></div>
+    <% end %>
+  </ul>
+</div>
 <a href='#' onclick='slider.prev();return false;'>●</a>
 <a href='#' onclick='slider.next();return false;'>●</a>
 
