@@ -1,8 +1,6 @@
 <%= form_for(@word) do |f| %>
   <% if @word.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@word.errors.count, "error") %> prohibited this word from being saved:</h2>
-
+    <div class="alert alert-error">
       <ul>
       <% @word.errors.full_messages.each do |msg| %>
         <li><%= msg %></li>
@@ -11,7 +9,15 @@
     </div>
   <% end %>
 
-  <div class="actions">
-    <%= f.submit %>
-  </div>
+  <fieldset>
+    <div>
+      <%= f.text_field :keyword, placeholder: "単語", class: 'input-span1' %>
+    </div>
+    <div>
+      <%= f.text_area :discription, placeholder: "答え", class: 'input-span1', rows: 8 %>
+    </div>
+    <div>
+      <%= f.submit '登録', class: 'btn btn-primary' %>
+    </div>
+  </fieldset>
 <% end %>

@@ -17,6 +17,11 @@ class WordsController < ApplicationController
 
   def create
     @word = Word.new(params[:word])
+    if @word.save
+      redirect_to words_path
+    else
+      render action: "new"
+    end
   end
 
   def update
