@@ -2,9 +2,9 @@
   <% if @word.errors.any? %>
     <div class="alert alert-error">
       <ul>
-      <% @word.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
-      <% end %>
+        <% @word.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
       </ul>
     </div>
   <% end %>

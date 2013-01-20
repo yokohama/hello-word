@@ -9,11 +9,13 @@
 <br />
 
 <div>
-<p>登録されている単語</p>
-<hr />
-<ul>
-  <% @words.each do |word| %>
-    <li><%= link_to word.keyword, word %></li>
-  <% end %>
-</ul>
+  <p>登録されている単語</p>
+  <hr />
+  <div style="word-break: break-all;">
+    <ul>
+      <% @words.each do |word| %>
+        <li><%= link_to word.keyword, word %></li>
+      <% end %>
+    </ul>
+  </div>
 </div>
