@@ -39,7 +39,7 @@ class WordsController < ApplicationController
           BookWord.create(book_id:params[:book_id], word_id:@word.id)
         end
         flash[:notice] = 'success word created.'
-        format.json { render json: @word, status: :created, location: @word }
+        format.json { render json: @word, status: :created}
       else
         format.json { render json: @word.errors, status: :unprocessable_entity }
       end

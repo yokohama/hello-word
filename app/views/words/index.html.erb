@@ -23,7 +23,7 @@
           <% @words.each do |w| %>
             <tr>
               <td><p style="word-break: break-all;"><%= w.word %></p></td>
-              <td><p style="word-break: break-all;"><%= w.answer %></p></td>
+              <td><p style="word-break: break-all;"><%= simple_format w.answer %></p></td>
               <td><input type="checkbox" value="<%= w.id %>" class="word-checkbox" /></td>
             </tr>
           <% end %>
