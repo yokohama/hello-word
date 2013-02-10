@@ -1,19 +1,16 @@
-<form id="word-new">
-
-<div id="word-new-message-area"></div>
-
-  <fieldset>
-    <div>
-      <input type="text" id="inputWord" name="book[word]" placeholder="単語" class="input-span1" />
-    </div>
-    <div>
-      <textarea id="inputAnswer" name="book[answer]" placeholder="答え" class="input-span1" rows="3"></textarea>
-    </div>
-  </fieldset>
-</form>
-
-<div class="form-actions">
-  <button type="button" class="btn btn-primary" onclick="word_create(<%= @book.id %>);">単語の登録</button>
+<div style="margin-bottom:40px;">
+  <div id="word-new-message-area"></div>
+  <form id="word-new">
+    <fieldset>
+      <div>
+        <input type="text" id="inputWord" name="book[word]" placeholder="単語" class="input-span1" />
+      </div>
+      <div>
+        <textarea id="inputAnswer" name="book[answer]" placeholder="答え" class="input-span1" rows="3"></textarea>
+      </div>
+    </fieldset>
+  </form>
+  <button type="button" class="btn btn-primary pull-right" onclick="word_create(<%= @book.id %>);">単語の登録</button>
 </div>
 
 <h3>エクセル一括登録</h3>

@@ -1,6 +1,14 @@
 <div class="container-fluid">
   <div class="row-fluid">
     <div class="span7">
+      <center>
+        <form class="form-search">
+          <div class="input-append">
+            <input type="text" class="span12 search-query">
+            <button type="submit" class="btn"><i class="icon-search"></i></button>
+          </div>
+        </form>
+      </center>
       <%#= render partial:'/words/play' %>
       <table class="table table-striped">
         <thead>
@@ -8,9 +16,20 @@
             <th>単語</th>
             <th>意味</th>
             <th>
+              <!--
               <div class="btn-group">
                 <button class="btn dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
                 <ul class="dropdown-menu">
+                  <li><a href="#" onclick="word_all_checked(true)" >全て選択</a></li>
+                  <li><a href="#" onclick="word_all_checked(false)">選択解除</a></li>
+                  <li><a href="#" onclick="word_destroy(<%= @book ? @book.id : 0 %>)">削除</a></li>
+                </ul>
+              </div>
+              -->
+              <div class="dropdown">
+                <!--<a class="dropdown-toggle" id="dLabel" role="button" data-toggle="dropdown" data-target="#" href="/page.html"><i class="icon-wrench"></i></a>-->
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="icon-wrench"></i></a>
+                <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
                   <li><a href="#" onclick="word_all_checked(true)" >全て選択</a></li>
                   <li><a href="#" onclick="word_all_checked(false)">選択解除</a></li>
                   <li><a href="#" onclick="word_destroy(<%= @book ? @book.id : 0 %>)">削除</a></li>
