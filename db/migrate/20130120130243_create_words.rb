@@ -7,6 +7,6 @@ class CreateWords < ActiveRecord::Migration
 
       t.timestamps
     end
-    add_index :words, :word
+    #add_index :words, :word
   end
 end
