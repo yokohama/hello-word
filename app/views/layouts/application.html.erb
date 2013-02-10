@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= content_for?(:title) ? yield(:title) : "Helloword" %></title>
+    <title><%= content_for?(:title) ? yield(:title) : "HelloWord" %></title>
     <%= csrf_meta_tags %>
 
     <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
@@ -45,10 +45,15 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </a>
-          <a class="brand" href="/">#H</a>
+          <p class="navbar-text pull-right">
+            <% if current_user %>
+              <%= link_to "Log out", destroy_user_session_path, method:'delete', class:'navbar-link' %>
+            <% else %>
+            <% end %>
+          </p>
+          <a class="brand" href="/">HelloWord</a>
           <div class="container-fluid nav-collapse">
             <ul class="nav">
-              <li><%= link_to "+", "/words/new"  %></li>
               <li><%= link_to "info", "/"  %></li>
             </ul>
           </div><!--/.nav-collapse -->
@@ -56,8 +61,23 @@
       </div>
     </div>
 
+
     <!--<div class="container-fluid">-->
     <div class="container">
+      <div id="message-area">
+        <% if notice %>
+          <div class="alert alert-success">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <%= notice %>
+          </div>
+        <% end %>
+        <% if alert %>
+          <div class="alert alert-error">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <%= alert %>
+          </div>
+        <% end %>
+      </div>
       <%= yield %>
       <!--
       <footer>

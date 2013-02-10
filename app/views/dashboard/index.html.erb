@@ -1,0 +1,34 @@
+<div class="container-fluid">
+  <div class="row-fluid">
+    <div class="span2" id="book-index"></div>
+    <div class="span10" id="book-show"></div>
+  </div>
+</div>
+
+<script>
+  $(function () {
+    book_index();
+    book_show(0);
+  })
+
+  function book_index() {
+    $.ajax({
+       type: "GET",
+       url: "/books",
+       success: function(msg){
+         $('#book-index').html(msg);
+       }
+     });
+  };
+
+  function book_show(id) {
+    $.ajax({
+       type: "GET",
+       url: "/books/" + id,
+       success: function(msg){
+         $('#book-show').html(msg);
+       }
+     });
+  };
+</script>
+

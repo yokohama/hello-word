@@ -1,21 +1,73 @@
-<h1>単語一覧</h1>
-
-<div>
-<center>
-  <%= link_to "START", swipe_words_path, class: 'btn btn-primary' %>
-</center>
-</div>
-
-<br />
-
-<div>
-  <p>登録されている単語</p>
-  <hr />
-  <div style="word-break: break-all;">
-    <ul>
-      <% @words.each do |word| %>
-        <li><%= link_to word.keyword, word %></li>
-      <% end %>
-    </ul>
+<div class="container-fluid">
+  <div class="row-fluid">
+    <div class="span7">
+      <%#= render partial:'/words/play' %>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>単語</th>
+            <th>意味</th>
+            <th>
+              <div class="btn-group">
+                <button class="btn dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
+                <ul class="dropdown-menu">
+                  <li><a href="#" onclick="word_all_checked(true)" >全て選択</a></li>
+                  <li><a href="#" onclick="word_all_checked(false)">選択解除</a></li>
+                  <li><a href="#" onclick="word_destroy(<%= @book ? @book.id : 0 %>)">削除</a></li>
+                </ul>
+              </div>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @words.each do |w| %>
+            <tr>
+              <td><p style="word-break: break-all;"><%= w.word %></p></td>
+              <td><p style="word-break: break-all;"><%= w.answer %></p></td>
+              <td><input type="checkbox" value="<%= w.id %>" class="word-checkbox" /></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+    <div class="span5">
+      <div id="word-new"></div>
+    </div>
   </div>
 </div>
+
+<script>
+  $(function () {
+    word_new(<%= @book ? @book.id : 0 %>);
+  });
+
+  function word_new(id) {
+    $.ajax({
+       type: "GET",
+       url: "/books/" + id + "/words/new",
+       success: function(msg){
+         $('#word-new').html(msg);
+       }
+     });
+  };
+
+  //BUG:一度全部解除すると、全て選択が機能しなくなる。
+  function word_all_checked(b) {
+    $('.word-checkbox').each(function(){
+      $(this).attr('checked', b);
+    });
+  }
+
+  function word_destroy(book_id) {
+    var ids = $('.word-checkbox:checked').map(function() { return this.value; }).get().join();
+    $.ajax({
+       type: "DELETE",
+       url: "/books/" + book_id + "/words/destroy_all",
+       data: "words=" + ids,
+       success: function(msg){
+         book_show(book_id);
+       }
+     });
+  }
+
+</script>

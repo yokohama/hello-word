@@ -1,6 +1,6 @@
 <div class="hero-unit" style="padding-top:4px;padding-bottom:40px;"> 
-  <center><h1><%= @word.keyword %></h1></center>
+  <center><h1><%= @word.word %></h1></center>
   <hr />
-  <p><li><%= @word.discription %></li></p>
+  <p><li><%= @word.answer %></li></p>
   <p class="pull-right"><%= link_to '戻る', words_path %> | <%= link_to '編集', edit_word_path(@word) %> | <%= link_to '削除', word_path(@word), method: :delete, data: { confirm: 'この単語を本当に削除しますか？' } %></p>
 </div>

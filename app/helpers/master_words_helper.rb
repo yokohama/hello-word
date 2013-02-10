@@ -1,0 +1,2 @@
+module MasterWordsHelper
+end
