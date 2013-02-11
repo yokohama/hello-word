@@ -12,6 +12,7 @@ Helloword::Application.routes.draw do
       collection do
         get :swipe
         delete :destroy_all
+        match '/iframe' => 'words#iframe'
       end
     end
   end

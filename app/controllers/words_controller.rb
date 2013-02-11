@@ -86,4 +86,12 @@ class WordsController < ApplicationController
     end
   end
 
+  def iframe
+    if params[:book_id].to_i == 0
+      @book = Book.library_new(current_user)
+    else
+      @book = current_user.books.find params[:book_id]
+    end
+  end
+
 end

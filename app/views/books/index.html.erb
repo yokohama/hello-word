@@ -1,9 +1,8 @@
 <h3>単語帳一覧 <a href="#myModal" data-toggle="modal"><i class="icon icon-plus-sign"></i></a></h3>
-  <div class="library" id="0" style="background-color:red;"><a href="#">ライブラリ</a></div>
+  <div class="library alert alert-success" id="0"><a href="#">ライブラリ</a></div>
   <br />
   <% @books.each do |b| %>
-    <!--<div class="library" id="<%#= b.id %>"><%#= link_to b.title, "/dashboard/#{b.id}" %></div>-->
-    <div class="library" id="<%= b.id %>"><p style="word-break: break-all;"><a href="#"><%= b.title %></a></p></div>
+    <div class="library alert" id="<%= b.id %>"><p style="word-break: break-all;"><a href="#"><%= b.title %></a></p></div>
   <% end %>
 </ul>
 
@@ -19,10 +18,10 @@
     var libraries = $(".library");
 
     //リストメニューハイライト
-    for (i=0; i<libraries.length; i++) {
-      $(libraries[i]).css("background-color", "#FFFFFF");
-    }
-    $('#'+id).css("background-color", "red");
+    $(libraries).each(function() {
+      $(this).removeClass("alert-success");
+    });
+    $('#'+id).addClass("alert-success");
 
     //books#showの読み込み
     book_show(id);
