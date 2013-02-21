@@ -40,7 +40,7 @@
   function hoge() {
     $.ajax({
        type: "POST",
-       url: "<%= api_users_sign_in_by_mobile_path %>",
+       url: "/api/users/sign_in_by_mobile",
        data: "user[email]=yokohama@raw-hide.co.jp&user[password]=hgpq0202",
        success: function(msg){
        },
