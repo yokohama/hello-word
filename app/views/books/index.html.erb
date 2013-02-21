@@ -2,7 +2,7 @@
   <div class="library alert alert-success" id="0"><a href="#">ライブラリ</a></div>
   <br />
   <% @books.each do |b| %>
-    <div class="library alert" id="<%= b.id %>"><p style="word-break: break-all;"><a href="#"><%= b.title %></a></p></div>
+    <div class="library alert" id="<%= b.id %>"><p style="word-break: break-all;"><a onclick="return(false);"><%= b.title %></a></p></div>
   <% end %>
 </ul>
 

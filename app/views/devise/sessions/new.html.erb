@@ -29,3 +29,34 @@
 
 <%= render "devise/shared/links" %>
 
+
+<div>
+  <a href="#" onclick="hoge();">hoge</a>
+  <a href="#" onclick="moge();">moge</a>
+</div>
+
+
+<script>
+  function hoge() {
+    $.ajax({
+       type: "POST",
+       url: "<%= api_users_sign_in_by_mobile_path %>",
+       data: "user[email]=yokohama@raw-hide.co.jp&user[password]=hgpq0202",
+       success: function(msg){
+       },
+       error: function(msg){
+       }
+     });
+  };
+  function moge() {
+    $.ajax({
+       type: "POST",
+       url: "<%= api_users_sign_in_by_mobile_path %>",
+       data: "user[email]=fuga&user[password]=moge",
+       success: function(msg){
+       },
+       error: function(msg){
+       }
+     });
+  };
+</script>
