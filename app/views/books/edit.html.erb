@@ -1,0 +1,61 @@
+<h3 id="myModalLabel">単語帳の設定</h3>
+
+<div id="book-edit-message-area"></div>
+<% if @book.id.nil? %>
+  <div class="hero-unit">
+    <h3>ライブラリ</h3>
+    <ul>
+    <li>ライブラリには登録されている単語全てが入っています。</li>
+    <li>ライブラリにある単語を削除すると、その単語が登録されている全ての単語帳から、その単語が削除されます。</li>
+  </ul>
+  </div>
+<% else %>
+  <form class="form-horizontal" id="book-edit">
+    <div class="control-group">
+      <label class='control-label' for='inputTitle'>タイトル</label>
+      <div class="controls">
+        <input type="text" name="book[:title]" value="<%= @book.title %>" id="inputTitle" placeholder='タイトル' />
+      </div>
+    </div>
+  </form>
+  <div class="form-actions">
+    <button type="button" class="btn btn-primary" onclick="book_update(<%= @book.id %>);">変更</button>
+    <button type="button" class="btn btn-danger" onclick="book_destroy(<%= @book.id %>);">単語帳の削除</button>
+  </div>
+<% end %>
+
+<script>
+  function book_update(id) {
+    var title = $('#book-edit #inputTitle').val();
+
+    $.ajax({
+       type: "PUT",
+       url: "/books/" + id + ".json",
+       data: "book[title]=" + title,
+       success: function(msg){
+         //var notice = this.getResponseHeader("X-Flash-Notice");
+         location.reload();
+       },
+       error: function(msg){
+         var error_msg = $.parseJSON(msg.responseText);
+         var error_html = '<div class="alert alert-error">';
+         for (i=0; i<error_msg.title.length; i++) {
+           error_html += '<p>' + error_msg.title[i] + '</p>';
+         }
+         error_html += '</div>';
+         $('#book-edit-message-area').html(error_html);
+       }
+    });
+  }
+
+  function book_destroy(id) {
+    $.ajax({
+       type: "DELETE",
+       url: "/books/" + id + ".json",
+       success: function(msg){
+         //var notice = this.getResponseHeader("X-Flash-Notice");
+         location.reload();
+       }
+    });
+  }
+</script>

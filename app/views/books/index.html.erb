@@ -1,0 +1,62 @@
+<h3>単語帳一覧 <a href="#myModal" data-toggle="modal"><i class="icon icon-plus-sign"></i></a></h3>
+  <div class="library alert alert-success" id="0"><a href="#">ライブラリ</a></div>
+  <br />
+  <% @books.each do |b| %>
+    <div class="library alert" id="<%= b.id %>"><p style="word-break: break-all;"><a onclick="return(false);"><%= b.title %></a></p></div>
+  <% end %>
+</ul>
+
+<div id="book-new"></div>
+
+<script>
+  $(function () {
+    book_new();
+  });
+
+  $(".library").mouseover(function(){
+    var id = $(this).attr('id');
+    var libraries = $(".library");
+
+    //リストメニューハイライト
+    $(libraries).each(function() {
+      $(this).removeClass("alert-success");
+    });
+    $('#'+id).addClass("alert-success");
+
+    //books#showの読み込み
+    book_show(id);
+  });
+
+  function book_new() {
+    $.ajax({
+       type: "GET",
+       url: "/books/new",
+       success: function(msg){
+         $('#book-new').html(msg);
+       }
+     });
+  };
+
+  function book_create() {
+    title = $('#book #inputTitle').val();
+
+    $.ajax({
+       type: "POST",
+       url: "/books.json",
+       data: "book[title]=" + title,
+       success: function(msg){
+         //var notice = this.getResponseHeader("X-Flash-Notice");
+         location.reload();
+       },
+       error: function(msg){
+         var error_msg = $.parseJSON(msg.responseText);
+         var error_html = '<div class="alert alert-error">';
+         for (i=0; i<error_msg.title.length; i++) {
+           error_html += '<p>Title ' + error_msg.title[i] + '</p>';
+         }
+         error_html += '</div>';
+         $('#book-new-message-area').html(error_html);
+       }
+    });
+  }
+</script>

@@ -1,0 +1,77 @@
+<div class="container-fluid">
+  <div class="row-fluid">
+    <div class="span7">
+      <div>
+        <center style="margin-bottom:10px;">
+          <form class="form-search">
+            <div class="input-append">
+              <input type="text" class="span12 search-query">
+              <button class="btn" onclick="return(false);"><i class="icon-search"></i></button>
+            </div>
+          </form>
+        </center>
+      </div>
+      <%#= render partial:'/words/play' %>
+      <table class="table table-striped">
+        <thead>
+          <tr class="alert alert-success">
+            <th>単語</th>
+            <th>意味</th>
+            <th>
+              <div class="dropdown pull-right">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="icon-wrench"></i></a>
+                <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                  <li><a href="#" onclick="word_all_checked(true)" >全て選択</a></li>
+                  <li><a href="#" onclick="word_all_checked(false)">選択解除</a></li>
+                  <li><a href="#" onclick="word_destroy(<%= @book ? @book.id : 0 %>)">削除</a></li>
+                </ul>
+              </div>
+            </th>
+          </tr>
+        </thead>
+      </table>
+      <iframe src="<%= iframe_book_words_path(:book_id => (@book ? @book.id : 0)) %>" width="100%" height="400px">
+      </iframe>
+    </div>
+    <div class="span5">
+      <div id="word-new"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  $(function () {
+    word_new(<%= @book ? @book.id : 0 %>);
+  });
+
+  function word_new(id) {
+    $.ajax({
+       type: "GET",
+       url: "/books/" + id + "/words/new",
+       success: function(msg){
+         $('#word-new').html(msg);
+       }
+     });
+  };
+
+  //BUG:一度全部解除すると、全て選択が機能しなくなる。
+  function word_all_checked(b) {
+    //$('.word-checkbox').each(function(){
+    $('iframe:first').contents().find('.word-checkbox').each(function(){
+      $(this).attr('checked', b);
+    });
+  }
+
+  function word_destroy(book_id) {
+    var ids = $('iframe:first').contents().find('.word-checkbox:checked').map(function() { return this.value; }).get().join();
+    $.ajax({
+       type: "DELETE",
+       url: "/books/" + book_id + "/words/destroy_all",
+       data: "words=" + ids,
+       success: function(msg){
+         book_show(book_id);
+       }
+     });
+  }
+
+</script>

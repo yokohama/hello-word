@@ -1,0 +1,48 @@
+<div style="margin-bottom:40px;">
+  <div id="word-new-message-area"></div>
+  <form id="word-new">
+    <fieldset>
+      <div>
+        <input type="text" id="inputWord" name="book[word]" placeholder="単語" class="input-span1" />
+      </div>
+      <div>
+        <textarea id="inputAnswer" name="book[answer]" placeholder="答え" class="input-span1" rows="3"></textarea>
+      </div>
+    </fieldset>
+  </form>
+  <button type="button" class="btn btn-primary pull-right" onclick="word_create(<%= @book.id %>);">単語の登録</button>
+</div>
+
+<h3>エクセル一括登録</h3>
+<div id="dropbox">
+  <span class="message">Drop images here to upload. <br /><i>(they will only be visible to you)</i></span>
+</div>
+
+<script>
+  function word_create(id) {
+    word = $('#word-new #inputWord').val();
+    answer = $('#word-new #inputAnswer').val();
+
+    $.ajax({
+       type: "POST",
+       url: "/books/" + id + "/words.json",
+       data: "word[word]=" + word + "&word[answer]=" + answer,
+       success: function(msg){
+         //var notice = this.getResponseHeader("X-Flash-Notice");
+         book_show(id);
+       },
+       error: function(msg){
+         var error_msg = $.parseJSON(msg.responseText);
+         var error_html = '<div class="alert alert-error">';
+         for (i=0; i<error_msg.answer.length; i++) {
+           error_html += '<p>Word ' + error_msg.word[i] + '</p>';
+         }
+         for (i=0; i<error_msg.answer.length; i++) {
+           error_html += '<p>Answer ' + error_msg.answer[i] + '</p>';
+         }
+         error_html += '</div>';
+         $('#word-new-message-area').html(error_html);
+       }
+    });
+  }
+</script>

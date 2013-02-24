@@ -1,0 +1,22 @@
+<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabel">単語帳の追加</h3>
+  </div>
+  <div class="modal-body">
+    <div id="book-new-message-area"></div>
+    <form class="form-horizontal" id="book">
+      <div class="control-group">
+        <label class='control-label' for='inputTitle'>タイトル</label>
+        <div class="controls">
+          <input type="text" name="book[:title]" id="inputTitle" placeholder='タイトル' autofocus=true />
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+    <button class="btn btn-primary" onclick="book_create();">登録</button>
+  </div>
+</div>
+
