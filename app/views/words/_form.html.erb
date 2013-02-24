@@ -1,0 +1,23 @@
+<%= form_for(@word) do |f| %>
+  <% if @word.errors.any? %>
+    <div class="alert alert-error">
+      <ul>
+        <% @word.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <fieldset>
+    <div>
+      <%= f.text_field :keyword, placeholder: "単語", class: 'input-span1' %>
+    </div>
+    <div>
+      <%= f.text_area :discription, placeholder: "答え", class: 'input-span1', rows: 8 %>
+    </div>
+    <div>
+      <%= f.submit '登録', class: 'btn btn-primary' %>
+    </div>
+  </fieldset>
+<% end %>

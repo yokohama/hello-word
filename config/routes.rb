@@ -30,8 +30,11 @@ Helloword::Application.routes.draw do
     end
   end
 
+<<<<<<< HEAD
   namespace :api do
     post 'books' => 'books#index'
   end
 
+=======
+>>>>>>> 717214e883f427b9499233ecba9b8106c360fe1d
 end
