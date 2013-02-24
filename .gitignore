@@ -16,3 +16,5 @@
 
 .rbenv-vertion
 .rbenv-gemsets
+
+vendor/bundle
