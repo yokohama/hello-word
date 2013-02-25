@@ -56,6 +56,4 @@ ActiveRecord::Schema.define(:version => 20130209134747) do
     t.datetime "updated_at", :null => false
   end
 
-  add_index "words", ["word"], :name => "index_words_on_word"
-
 end
