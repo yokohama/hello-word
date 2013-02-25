@@ -60,5 +60,7 @@ module Helloword
     config.assets.version = '1.0'
 
     config.action_view.field_error_proc = proc { |input, instance| input }
+
+    config.assets.initialize_on_precompile = false
   end
 end
