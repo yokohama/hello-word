@@ -7,6 +7,9 @@ Helloword::Application.routes.draw do
   #as :user do
   #  post 'sign_in_by_mobile_player' => "users/sessions#create_by_mobile_player", as:'user_session_by_mobile_player'
   #end
+  
+  get '/samples/file' => 'samples#file'
+  post '/samples/file' => 'samples#update'
 
   root to:'dashboard#index'
 

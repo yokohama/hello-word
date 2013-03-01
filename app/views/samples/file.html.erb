@@ -1,0 +1,172 @@
+<div id="container">
+
+<div id="drop_here">
+ここにfileをdrag &amp; drop して下さい
+</div>
+<input type="button" value="表示中のFILEをUPLOAD" onclick='fup.upload_files()'>
+<div style="clear:both"></div>
+
+<div id="files_info">
+</div>
+
+</div>
+</body>
+
+<script>
+function FileUpload(elm_id){
+  var LOADED_FILES = []; //upload対象のfile一覧
+  var LIMIT_IMG_W = 200; //画像fileはthumb nail表示しますが、
+  var LIMIT_IMG_H = 200; //その際の最大表示サイズ
+  var UPLOAD_URL = '/samples/file';
+  var TEXT_ENCODING = 'UTF-8';
+    
+  //初期化
+  this.init = function(elm_id){
+    if( $("#" + elm_id).size() == 0 ){
+      alert("can't find drop to element id : " + elm_id);
+      return;
+    }
+    LOADED_FILES = [];
+        
+    //drop eventをセット.
+    //※jquery.bindを使用すると、drop eventからdataTransferを取得不可。
+    var this_obj = this;
+    document.getElementById(elm_id).addEventListener('drop',
+      function(e){this_obj.do_drop_file(e);},false);
+      //default event & bubblingを中止
+      $("#" + elm_id).bind('dragenter', function(e){e.preventDefault(); e.stopPropagation();})
+        .bind('dragover', function(e){e.preventDefault(); e.stopPropagation();});
+      $("html").bind('drop', function(e){e.preventDefault(); e.stopPropagation();})
+        .bind('dragenter', function(e){e.preventDefault(); e.stopPropagation();})
+        .bind('dragover', function(e){e.preventDefault(); e.stopPropagation();});
+    };
+
+    //fileがdropされると、呼ばれます
+    this.do_drop_file = function(e){
+      var files = e.dataTransfer.files;
+
+      var reader = new FileReader();
+      reader.onloadend = function(e) {
+        LOADED_FILES.push(e.target.result);
+      };
+
+      for (var i=0; i<files.length; i++){
+        if (files[i].size ==0) continue;      
+          alert(files[i].type);
+          reader.readAsDataURL(files[i]);  //base 64でload
+          if (this.can_disp_text_file(files[i].type)){
+            if (this.validation()) {
+              alert(LOADED_FILES.length);
+              this.upload_files();
+            } else {
+              //TODO:ひっかかった部分を表示
+            }
+          }
+       }
+    };
+
+    this.validation = function(){
+          /* TODO:validationのエラー表示用にこの表示ロジックは使う。
+          $('#files_info').append($("<div class='file_info'>") );
+          //filenameやtype, sizeの表示
+          var file_info = "<span class='file_title'>" +files[i].name+"</span>" + ' ( '+ files[i].type+' '+files[i].size+'byte)<br>';
+          $('#files_info>div:last').append(file_info);
+          //thumb nailやtext内容の表示
+          if ( this.can_disp_image_file(files[i].type) ){
+            $('#files_info>div:last').append("<img>");
+            this.make_image_element(files[i], $('#files_info>div:last img'));
+          } else if ( this.can_disp_text_file(files[i].type) ){
+            $('#files_info>div:last').append("<textarea cols='80' rows='10'></textarea>");
+            this.make_text_element(files[i], $('#files_info>div:last textarea'));
+          }
+          */
+          return true;
+    };
+
+    //thumb nail表示用のelement
+    /*
+    this.make_image_element = function(file,img){
+      var reader = new FileReader();
+
+      reader.onload = function(e) {
+        //html5では、srcにbase64な値を登録できるらしい
+        img.attr('src',e.target.result);
+        if( img.attr('width') >= LIMIT_IMG_W ){
+          img.attr('width',LIMIT_IMG_W);
+        }
+        if ( img.attr('height') >= LIMIT_IMG_H ){
+          img.attr('height',LIMIT_IMG_H);
+        }
+      };
+      reader.readAsDataURL(file);  //base 64形式でload
+      return img;
+    };
+    */
+
+    /* TODO:validation表示用のロジックとして使う。
+    this.make_text_element = function(file,textarea){
+      var reader = new FileReader();
+      reader.onload = function(e) { $(textarea).html(e.target.result); };
+      reader.readAsText(file,TEXT_ENCODING); //text形式でload
+    };
+    */
+
+    //表示可能な画像fileの判定
+    /*
+    this.can_disp_image_file = function(file_type){
+      if (file_type == 'image/png' || file_type == 'image/jpeg' ){
+        return true;
+      }
+      return false;
+    };
+    */
+
+    //表示可能な画像fileの判定
+    this.can_disp_text_file = function(file_type){
+      if (file_type == 'text/plain' || file_type == 'text/csv' ){
+        return true;
+      }
+      return false;
+    };
+
+    //※html5では、FormDataというクラスが追加されたようですが
+    //  firefox3.6では利用できないようなので、jquery.param()で送信.
+    this.upload_files = function(){
+      if (LOADED_FILES.length ==0) return;
+      var data = new Object();
+      data.files = LOADED_FILES;
+
+      var this_obj = this;
+      $.post(UPLOAD_URL, $.param(data,true), function(data,textStatus){ this_obj.post_upload_files(data, textStatus); });
+    };
+
+    this.post_upload_files = function(data,textStatus){ alert('UPLOAD完了'); };
+    
+    //初期化実行
+    this.init(elm_id);
+};
+
+var fup = new FileUpload('drop_here');
+</script>
+
+<style>
+#container {
+    padding: 5px;
+}
+
+#drop_here {
+    border: 1px solid #000000;
+    width: 250px;
+    height: 50px;
+    text-align: center;
+    margin-right: 5px;
+    padding: 5px;
+    float:left;
+}
+
+.file_info {
+    border: 1px solid #000000;
+    margin: 5px 0;
+    padding: 5px;
+}
+</style>
