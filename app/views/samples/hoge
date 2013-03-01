@@ -3,10 +3,10 @@
 <div id="drop_here">
 ここにfileをdrag &amp; drop して下さい
 </div>
-<input type="button" value="表示中のFILEをUPLOAD" onclick='fup.upload_file()'>
+<input type="button" value="表示中のFILEをUPLOAD" onclick='fup.upload_files()'>
 <div style="clear:both"></div>
 
-<div id="file_info">
+<div id="files_info">
 </div>
 
 </div>
@@ -14,7 +14,7 @@
 
 <script>
 function FileUpload(elm_id){
-  var LOADED_FILE = []; //upload対象のfile一覧
+  var LOADED_FILES = []; //upload対象のfile一覧
   var LIMIT_IMG_W = 200; //画像fileはthumb nail表示しますが、
   var LIMIT_IMG_H = 200; //その際の最大表示サイズ
   var UPLOAD_URL = '/samples/file';
@@ -26,7 +26,7 @@ function FileUpload(elm_id){
       alert("can't find drop to element id : " + elm_id);
       return;
     }
-    LOADED_FILE = [];
+    LOADED_FILES = [];
         
     //drop eventをセット.
     //※jquery.bindを使用すると、drop eventからdataTransferを取得不可。
@@ -43,16 +43,26 @@ function FileUpload(elm_id){
 
     //fileがdropされると、呼ばれます
     this.do_drop_file = function(e){
-      var file = e.dataTransfer.files[0];
+      var files = e.dataTransfer.files;
 
       var reader = new FileReader();
       reader.onloadend = function(e) {
-        LOADED_FILE.push(e.target.result);
-        fup.upload_file();
+        LOADED_FILES.push(e.target.result);
       };
 
-      if (file.size ==0) return;
-      reader.readAsDataURL(file);  //base 64でload
+      for (var i=0; i<files.length; i++){
+        if (files[i].size ==0) continue;      
+          alert(files[i].type);
+          reader.readAsDataURL(files[i]);  //base 64でload
+          if (this.can_disp_text_file(files[i].type)){
+            if (this.validation()) {
+              alert(LOADED_FILES.length);
+              this.upload_files();
+            } else {
+              //TODO:ひっかかった部分を表示
+            }
+          }
+       }
     };
 
     this.validation = function(){
@@ -121,19 +131,16 @@ function FileUpload(elm_id){
 
     //※html5では、FormDataというクラスが追加されたようですが
     //  firefox3.6では利用できないようなので、jquery.param()で送信.
-    this.upload_file = function(){
-      console.log("hgoehgoheogheo");
-      if (LOADED_FILE.length ==0) return;
+    this.upload_files = function(){
+      if (LOADED_FILES.length ==0) return;
       var data = new Object();
-      data.file = LOADED_FILE;
+      data.files = LOADED_FILES;
 
       var this_obj = this;
-      $.post(UPLOAD_URL, $.param(data,true), function(data,textStatus){ this_obj.post_upload_file(data, textStatus); });
+      $.post(UPLOAD_URL, $.param(data,true), function(data,textStatus){ this_obj.post_upload_files(data, textStatus); });
     };
 
-    this.post_upload_file = function(data,textStatus){ 
-      alert('UPLOAD完了'); 
-    };
+    this.post_upload_files = function(data,textStatus){ alert('UPLOAD完了'); };
     
     //初期化実行
     this.init(elm_id);
