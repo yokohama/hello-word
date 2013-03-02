@@ -13,10 +13,13 @@
   <button type="button" class="btn btn-primary pull-right" onclick="word_create(<%= @book.id %>);">単語の登録</button>
 </div>
 
+<!--
 <h3>エクセル一括登録</h3>
 <div id="dropbox">
   <span class="message">Drop images here to upload. <br /><i>(they will only be visible to you)</i></span>
 </div>
+-->
+<%= render partial:'file' %>
 
 <script>
   function word_create(id) {
