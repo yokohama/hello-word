@@ -94,4 +94,9 @@ class WordsController < ApplicationController
     end
   end
 
+  def validation
+    #TODO:yokohama ここでどんなファイルがきても内容をUTF-8に変換してあげる。
+    @file = params[:file]
+  end
+
 end

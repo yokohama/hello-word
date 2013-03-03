@@ -1,0 +1,23 @@
+<% 
+  #encoding: utf-8
+  require "csv"
+
+  csv = CSV.new(@file)
+%>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>単語</th>
+      <th>答え</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% csv.each do |c| %>
+      <tr>
+        <td><%= c[0] %></td>
+        <td><%= c[1] %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

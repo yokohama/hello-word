@@ -21,6 +21,7 @@ Helloword::Application.routes.draw do
         get :swipe
         delete :destroy_all
         match '/iframe' => 'words#iframe'
+        post :validation
       end
     end
   end

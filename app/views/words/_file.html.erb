@@ -13,16 +13,34 @@
   <p class="message">ここにCSVをドロップ</p>
 </div>
 
+<div id="fileValidation" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="fileValidation" aria-hidden="true">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="fileValidation">内容の確認</h3>
+  </div>
+  <div class="modal-body">
+    <div id="message"></div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+    <button class="btn btn-primary" onclick="fup.upload_file();">Save changes</button>
+  </div>
+</div>
+
 <script>
+
 function FileUpload(elm_id){
   var LOADED_FILE = []; //upload対象のfile一覧
   var LIMIT_IMG_W = 200; //画像fileはthumb nail表示しますが、
   var LIMIT_IMG_H = 200; //その際の最大表示サイズ
   var UPLOAD_URL = '/samples/file';
   var TEXT_ENCODING = 'UTF-8';
+
+  var FILE = null;
     
   //初期化
   this.init = function(elm_id){
+
     if( $("#" + elm_id).size() == 0 ){
       alert("can't find drop to element id : " + elm_id);
       return;
@@ -40,106 +58,83 @@ function FileUpload(elm_id){
       $("html").bind('drop', function(e){e.preventDefault(); e.stopPropagation();})
         .bind('dragenter', function(e){e.preventDefault(); e.stopPropagation();})
         .bind('dragover', function(e){e.preventDefault(); e.stopPropagation();});
+  };
+
+  //fileがdropされると、呼ばれる
+  this.do_drop_file = function(e){
+    FILE = e.dataTransfer.files[0];
+
+    var reader = new FileReader();
+    reader.onloadend = function(e) {
+      LOADED_FILE.push(e.target.result);
+      fup.validation();
+      //fup.upload_file();
     };
 
-    //fileがdropされると、呼ばれる
-    this.do_drop_file = function(e){
-      var file = e.dataTransfer.files[0];
-      console.log("hgoehgoheogheo2");
+    reader.readAsText(FILE, "UIF-8");
+  };
 
-      var reader = new FileReader();
-      reader.onloadend = function(e) {
-        LOADED_FILE.push(e.target.result);
-        fup.upload_file();
-      };
-
-      if (file.size ==0) return;
-      //reader.readAsDataURL(file);  //base 64でload
-      reader.readAsText(file, "UIF-8");
-    };
-
-    this.validation = function(){
-          /* TODO:validationのエラー表示用にこの表示ロジックは使う。
-          $('#files_info').append($("<div class='file_info'>") );
-          //filenameやtype, sizeの表示
-          var file_info = "<span class='file_title'>" +files[i].name+"</span>" + ' ( '+ files[i].type+' '+files[i].size+'byte)<br>';
-          $('#files_info>div:last').append(file_info);
-          //thumb nailやtext内容の表示
-          if ( this.can_disp_image_file(files[i].type) ){
-            $('#files_info>div:last').append("<img>");
-            this.make_image_element(files[i], $('#files_info>div:last img'));
-          } else if ( this.can_disp_text_file(files[i].type) ){
-            $('#files_info>div:last').append("<textarea cols='80' rows='10'></textarea>");
-            this.make_text_element(files[i], $('#files_info>div:last textarea'));
-          }
-          */
-          return true;
-    };
-
-    //thumb nail表示用のelement
-    /*
-    this.make_image_element = function(file,img){
-      var reader = new FileReader();
-
-      reader.onload = function(e) {
-        //html5では、srcにbase64な値を登録できるらしい
-        img.attr('src',e.target.result);
-        if( img.attr('width') >= LIMIT_IMG_W ){
-          img.attr('width',LIMIT_IMG_W);
-        }
-        if ( img.attr('height') >= LIMIT_IMG_H ){
-          img.attr('height',LIMIT_IMG_H);
-        }
-      };
-      reader.readAsDataURL(file);  //base 64形式でload
-      return img;
-    };
-    */
-
-    /* TODO:validation表示用のロジックとして使う。
-    this.make_text_element = function(file,textarea){
-      var reader = new FileReader();
-      reader.onload = function(e) { $(textarea).html(e.target.result); };
-      reader.readAsText(file,TEXT_ENCODING); //text形式でload
-    };
-    */
-
-    //表示可能な画像fileの判定
-    /*
-    this.can_disp_image_file = function(file_type){
-      if (file_type == 'image/png' || file_type == 'image/jpeg' ){
-        return true;
-      }
-      return false;
-    };
-    */
-
-    //表示可能な画像fileの判定
-    this.can_disp_text_file = function(file_type){
-      if (file_type == 'text/plain' || file_type == 'text/csv' ){
-        return true;
-      }
-      return false;
-    };
-
-    //※html5では、FormDataというクラスが追加されたようですが
-    //  firefox3.6では利用できないようなので、jquery.param()で送信.
-    this.upload_file = function(){
-      if (LOADED_FILE.length ==0) return;
+  this.validation = function(){
+    if (this.can_upload_file()) {
       var data = new Object();
       data.file = LOADED_FILE;
-      data.book_id = <%= @book.id %>;
-
       var this_obj = this;
-      $.post(UPLOAD_URL, $.param(data,true), function(data,textStatus){ this_obj.post_upload_file(data, textStatus); });
-    };
+      $.post(
+        '/books/' + "<%= @book.id %>" + '/words/validation', 
+        $.param(data,true), 
+        function(data,textStatus){ this_obj.print_validation_message(data, textStatus); 
+        }
+      );
+    }
+  };
 
-    this.post_upload_file = function(data,textStatus){ 
-      alert('UPLOAD完了'); 
-    };
+  //表示可能な画像fileの判定
+  this.can_upload_file = function(){
+    if (FILE.size == 0) {
+      $('#fileValidation #fileValidation').empty();
+      $('#fileValidation #message').empty();
+      $('#fileValidation #fileValidation').append(FILE.name);
+      $('#fileValidation #message').append('<p>ファイルが空です。</p>');
+      $('#fileValidation').modal('show');
+      return false;
+    }
+    if (FILE.type != 'text/csv'){
+      $('#fileValidation #fileValidation').empty();
+      $('#fileValidation #message').empty();
+      $('#fileValidation #fileValidation').append(FILE.name);
+      $('#fileValidation #message').append('<p>いまのところアップロードできるファイルはcsv形式のみです。</p>');
+      $('#fileValidation').modal('show');
+      return false;
+    }
+    return true;
+  };
+
+  //※html5では、FormDataというクラスが追加されたようですが
+  //  firefox3.6では利用できないようなので、jquery.param()で送信.
+  this.upload_file = function(){
+    if (LOADED_FILE.length ==0) return;
+    var data = new Object();
+    data.file = LOADED_FILE;
+    data.book_id = "<%= @book.id %>";
+
+    var this_obj = this;
+    $.post(UPLOAD_URL, $.param(data,true), function(data,textStatus){ this_obj.post_upload_file(data, textStatus); });
+  };
+
+  this.print_validation_message = function(data, textStatus){
+    $('#fileValidation #fileValidation').empty();
+    $('#fileValidation #message').empty();
+    $('#fileValidation #fileValidation').append(FILE.name);
+    $('#fileValidation #message').append(data);
+    $('#fileValidation').modal('show');
+  };
+
+  this.post_upload_file = function(data,textStatus){ 
+    alert('UPLOAD完了'); 
+  };
     
-    //初期化実行
-    this.init(elm_id);
+  //初期化実行
+  this.init(elm_id);
 };
 
 var fup = new FileUpload('dropbox');
