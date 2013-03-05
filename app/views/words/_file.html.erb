@@ -1,12 +1,9 @@
 <!-- TODO:yokohama
 アップロード時にファイルをUTF-8にコンバートする（テストやってない）
 アップロード時にプログレスバーを表示する
-バリデーションを実装する
 ライブラリにアップロードしようとしている場合は、データが全て上書きされると注意をだす。
 ライブラリにアップロードの場合は、モデルの関係等、サーバー側のロジックを見直す。
 アップロードしたときに、ブックとワードの関係レコードが削除されていない。
-アップロード完了時に、ブックのレコード（表示）を更新する。
-アップロード完了報告のアラートを表示する。
 -->
 <h3>単語一括登録(CSV)</h3>
 <div id="dropbox" class="hero-unit">
@@ -23,7 +20,7 @@
   </div>
   <div class="modal-footer">
     <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-    <button class="btn btn-primary" onclick="fup.upload_file();">Save changes</button>
+    <button class="btn btn-primary" onclick="fup.upload_file();$(this).attr('disabled', true);">Save changes</button>
   </div>
 </div>
 
@@ -33,7 +30,8 @@ function FileUpload(elm_id){
   var LOADED_FILE = []; //upload対象のfile一覧
   var LIMIT_IMG_W = 200; //画像fileはthumb nail表示しますが、
   var LIMIT_IMG_H = 200; //その際の最大表示サイズ
-  var UPLOAD_URL = '/samples/file';
+  //var UPLOAD_URL = '/samples/file';
+  //var UPLOAD_URL = '/words/update';
   var TEXT_ENCODING = 'UTF-8';
 
   var FILE = null;
@@ -118,7 +116,7 @@ function FileUpload(elm_id){
     data.book_id = "<%= @book.id %>";
 
     var this_obj = this;
-    $.post(UPLOAD_URL, $.param(data,true), function(data,textStatus){ this_obj.post_upload_file(data, textStatus); });
+    $.post("/books/<%= @book.id %>/words/file_upload", $.param(data,true), function(data,textStatus){ this_obj.post_upload_file(data, textStatus); });
   };
 
   this.print_validation_message = function(data, textStatus){
@@ -130,7 +128,8 @@ function FileUpload(elm_id){
   };
 
   this.post_upload_file = function(data,textStatus){ 
-    alert('UPLOAD完了'); 
+    $('#fileValidation').modal('hide');
+    book_show(<%= @book.id %>);
   };
     
   //初期化実行

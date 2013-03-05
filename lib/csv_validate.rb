@@ -2,23 +2,41 @@
 require "csv"
 
 class CsvValidate
-  def self.validate(data)
-    csv = CSV.new(data)
+  attr_accessor :line, :error_count, :records
 
-    line = 0
-    error_count = 0
-    records = []
-    csv.each do |c|
+  def initialize(data)
+    @csv = CSV.new(data)
+    @line = 0
+    @error_count = 0
+    @records = []
+  end
+
+  def validate
+    @csv.each do |c|
       r = {}
-      r[:word] = c[0]
-      r[:answer] = c[1]
-      if c.size != 2 || r[:word].blank? || r[:answer].blank?
+      if !format_check(c)
         r[:error_line_no] = line
-        error_count += 1
+        @error_count += 1
+      else
+        r[:word] = c[0]
+        r[:answer] = c[1]
       end
-      records << r
-      line += 1
+      @records << r
+      @line += 1
     end
-    return records, error_count
+  end
+
+  def to_words(user)
+    words = []
+    @csv.each do |c|
+      next unless format_check(c)
+      #p(">>>>>>>> #{format_check(c)} : #{c[0]}");
+      words << Word.new(:word => c[0], :answer => c[1], :user_id => user.id)
+    end
+    words
+  end
+
+  def format_check(line)
+    (line.size == 2 && line[0].present? && line[1].present?) ? true : false
   end
 end

@@ -58,9 +58,9 @@ class BooksController < ApplicationController
 
   def destroy
     @book = current_user.books.find(params[:id])
-    BookWord.where(book_id:@book.id).each do |bw|
-      bw.destroy
-    end
+    #BookWord.where(book_id:@book.id).each do |bw|
+    #  bw.destroy
+    #end
     @book.destroy
 
     respond_to do |format|

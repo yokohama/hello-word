@@ -96,22 +96,24 @@ class WordsController < ApplicationController
 
   def validation
     #TODO:yokohama ここでどんなファイルがきても内容をUTF-8に変換してあげる。
-    @records, @error_count = CsvValidate.validate(params[:file])
+    @cv = CsvValidate.new(params[:file])
+    @cv.validate
   end
 
-  def update
-    f = params[:file]
+  def file_upload
     book = current_user.books.find params[:book_id]
-    csv = CSV.new(f)
     book.words.each do |w|
       #BUG:yokohama 関連も一緒に消す
       w.destroy
     end
-    csv.each do |c|
-      word = Word.new :word => c[0], :answer => c[1]
-      word.user_id = current_user.id
-      book.words << word
+    @cv = CsvValidate.new(params[:file])
+    @cv.to_words(current_user).each do |w|
+      book.words << w
+    end
+    respond_to do |format|
+      format.html{ head :no_content }
     end
   end
+
 end
 

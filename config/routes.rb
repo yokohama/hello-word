@@ -22,6 +22,7 @@ Helloword::Application.routes.draw do
         delete :destroy_all
         match '/iframe' => 'words#iframe'
         post :validation
+        post '/file_upload' => 'words#file_upload'
       end
     end
   end

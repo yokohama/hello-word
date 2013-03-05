@@ -1,6 +1,6 @@
-<center><p><%= @records.size %>件の単語</p></center>
-<% if @error_count > 0 %>
-  <div class="label label-important" style="margin-top:10px;margin-bottom:10px;"><%= @error_count %>件の不正なデータがあります。<br />赤いレコードはデータがおかしいため保存のさいにスキップされます。</div>
+<center><p><%= @cv.records.size %>件の単語</p></center>
+<% if @cv.error_count > 0 %>
+  <div class="label label-important" style="margin-top:10px;margin-bottom:10px;"><%= @cv.error_count %>件の不正なデータがあります。<br />赤いレコードはデータがおかしいため保存のさいにスキップされます。</div>
 <% end %>
 <table class="table table-striped">
   <thead>
@@ -10,7 +10,7 @@
     </tr>
   </thead>
   <tbody>
-    <% @records.each do |r| %>
+    <% @cv.records.each do |r| %>
       <% if r[:error_line_no] %>
         <tr class="alert alert-error">
           <td><%= r[:word] %></td>

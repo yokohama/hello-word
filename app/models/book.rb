@@ -3,7 +3,7 @@ class Book < ActiveRecord::Base
 
   attr_accessible :title, :words
 
-  has_many :book_words
+  has_many :book_words, :dependent => :delete_all
   has_many :words, :through => :book_words
 
   validates :title, presence:true
