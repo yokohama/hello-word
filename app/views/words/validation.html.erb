@@ -5,6 +5,7 @@
   csv = CSV.new(@file)
 %>
 
+<center><p><%= csv.count %>件の単語</p></center>
 <table class="table table-striped">
   <thead>
     <tr>
@@ -14,10 +15,14 @@
   </thead>
   <tbody>
     <% csv.each do |c| %>
-      <tr>
-        <td><%= c[0] %></td>
-        <td><%= c[1] %></td>
-      </tr>
+      <% if c.size != 2 %>
+        <tr style="background-color:red;"><td>hoge</td></tr>
+      <% else %>
+        <tr>
+          <td><%= c[0] %></td>
+          <td><%= c[1] %></td>
+        </tr>
+      <% end %>
     <% end %>
   </tbody>
 </table>
