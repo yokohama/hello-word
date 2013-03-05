@@ -1,8 +1,10 @@
 <h3>単語帳一覧 <a href="#myModal" data-toggle="modal"><i class="icon icon-plus-sign"></i></a></h3>
-  <div class="library alert alert-success" id="0"><a href="#">ライブラリ</a></div>
+<ul>
+  <a onclick="book_show(0);"><div class="library alert alert-success" id="0">ライブラリ</div></a>
   <br />
   <% @books.each do |b| %>
-    <div class="library alert" id="<%= b.id %>"><p style="word-break: break-all;"><a onclick="return(false);"><%= b.title %></a></p></div>
+    <!--<div class="library alert" id="<%= b.id %>"><p style="word-break: break-all;"><a onclick="return(false);"><%= b.title %></a></p></div>-->
+    <a onclick="book_show(<%= b.id %>);"><div class="library alert" id="<%= b.id %>"><p style="word-break: break-all;"><%= b.title %></p></div></a>
   <% end %>
 </ul>
 
@@ -24,7 +26,7 @@
     $('#'+id).addClass("alert-success");
 
     //books#showの読み込み
-    book_show(id);
+    //book_show(id);
   });
 
   function book_new() {

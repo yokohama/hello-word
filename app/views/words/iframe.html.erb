@@ -1,19 +1,16 @@
-<div class="container-fluid">
-  <div class="row-fluid">
-    <div class="span7">
-      <table class="table table-striped">
-        <tbody>
-          <% @book.words.each do |w| %>
-            <tr>
-              <div>
-                <td><p style="word-break: break-all;"><font size="1"><%= w.word %></font></p></td>
-                <td><p style="word-break: break-all;"><font size="1"><%= simple_format w.answer %></font></p></td>
-                <td><div class="pull-right"><input type="checkbox" value="<%= w.id %>" class="word-checkbox" /></div></td>
-              </div>
-            </tr>
-          <% end %>
-        </tbody>
-      </table>
-    </div>
-  </div>
-</div>
+<%= stylesheet_link_tag "application", :media => "all" %>
+<%= javascript_include_tag "application" %>
+
+<table class="table table-striped">
+  <tbody>
+    <% @book.words.each do |w| %>
+      <div>
+        <tr />
+          <td width="180"><p style="word-break: break-all;"><font size="1"><%= w.word %></font></p></td>
+          <td width="300"><p style="word-break: break-all;"><font size="1"><%= simple_format w.answer %></font></p></td>
+          <td width="10"><div class="pull-right"><input type="checkbox" value="<%= w.id %>" class="word-checkbox" /></div></td>
+        </tr>
+      </div>
+    <% end %>
+  </tbody>
+</table>
