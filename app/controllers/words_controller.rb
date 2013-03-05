@@ -96,7 +96,7 @@ class WordsController < ApplicationController
 
   def validation
     #TODO:yokohama ここでどんなファイルがきても内容をUTF-8に変換してあげる。
-    @file = params[:file]
+    @records, @error_count = CsvValidate.validate(params[:file])
   end
 
   def update

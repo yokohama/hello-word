@@ -1,11 +1,7 @@
-<% 
-  #encoding: utf-8
-  require "csv"
-
-  csv = CSV.new(@file)
-%>
-
-<center><p><%= csv.count %>件の単語</p></center>
+<center><p><%= @records.size %>件の単語</p></center>
+<% if @error_count > 0 %>
+  <div class="label label-important" style="margin-top:10px;margin-bottom:10px;"><%= @error_count %>件の不正なデータがあります。<br />赤いレコードはデータがおかしいため保存のさいにスキップされます。</div>
+<% end %>
 <table class="table table-striped">
   <thead>
     <tr>
@@ -14,13 +10,16 @@
     </tr>
   </thead>
   <tbody>
-    <% csv.each do |c| %>
-      <% if c.size != 2 %>
-        <tr style="background-color:red;"><td>hoge</td></tr>
+    <% @records.each do |r| %>
+      <% if r[:error_line_no] %>
+        <tr class="alert alert-error">
+          <td><%= r[:word] %></td>
+          <td><%= r[:answer] %></td>
+        </tr>
       <% else %>
         <tr>
-          <td><%= c[0] %></td>
-          <td><%= c[1] %></td>
+          <td><%= r[:word] %></td>
+          <td><%= r[:answer] %></td>
         </tr>
       <% end %>
     <% end %>

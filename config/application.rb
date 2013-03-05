@@ -62,5 +62,6 @@ module Helloword
     config.action_view.field_error_proc = proc { |input, instance| input }
 
     config.assets.initialize_on_precompile = false
+    config.autoload_paths += Dir["#{config.root}/lib/**/"]
   end
 end
