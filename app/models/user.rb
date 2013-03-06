@@ -18,5 +18,5 @@ class User < ActiveRecord::Base
   # attr_accessible :title, :body
 
   has_many :words
-  has_many :books
+  has_many :books, :order => 'display asc'
 end

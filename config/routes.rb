@@ -16,6 +16,9 @@ Helloword::Application.routes.draw do
   match '/dashboard/:book_id' => 'dashboard#index'
 
   resources :books do
+    collection do
+      post :sort
+    end
     resources :words do
       collection do
         get :swipe

@@ -67,4 +67,16 @@ class BooksController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+  def sort
+    disps = params[:book_ids].split(',');
+    disps.each_with_index do |d, i|
+      book = Book.find d
+      book.display = i
+      book.save
+    end
+    respond_to do |format|
+      format.json { head :no_content }
+    end
+  end
 end
