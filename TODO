@@ -1,0 +1,21 @@
+<STEP1>
+webのbookの順序をかえられるようにする。
+webで順序をかえたbookをiPhoneに反映するようにする。
+webでbookに画像をつけられるようにする。
+webでつけたbookの画像をiphoneでも参照できるようにする。
+webで単語検索を実装する。
+
+<STEP2>
+facebook/twitterでログインできるようにする。
+ipass/facebook/twitterのアカウントをひもづけられるようにする。
+webでプロフィール画像を設定できるようにする。
+
+<STEP3>
+iPhoneでbookを追加できるようにする。＝＞人が作ったもの一覧から選択。
+ book画像と作成者画像が必要になる。
+
+<STEP4>
+iPhoneのpull to relreshの進行バーを表示させる。
+webのファイルアップロードの進行バーを表示させる。
+webのファイルアップロード文字コードコンバートを実装。
+

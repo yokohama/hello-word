@@ -1,12 +1,42 @@
+<style>
+  div.books-active {
+    background-color:#CDE4CA;
+    padding:10px 4px 10px 4px;
+    margin:-8px 0px -8px 0px;
+    color:#35672E;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    -moz-box-shadow: 2px 2px 10px #000;
+    -webkit-box-shadow: 2px 2px 10px #666;
+    font-weight:bold;
+  }
+  div.books {
+    background-color:#EDEAEA;
+    padding:10px 4px 10px 4px;
+    margin:-8px 0px -8px 0px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+  }
+
+</style>
+
 <h3>単語帳一覧 <a href="#myModal" data-toggle="modal"><i class="icon icon-plus-sign"></i></a></h3>
+  <a onclick="book_show(0);"><div class="library books-active" id="0">ライブラリ</div></a>
+  <div />
+  <% @books.each do |b| %>
+    <a onclick="book_show(<%= b.id %>);"><div id="<%= b.id %>" class="library books"><p style="word-break: break-all;"><%= b.title %></p></div></a>
+  <% end %>
+  <!--
 <ul>
   <a onclick="book_show(0);"><div class="library alert alert-success" id="0">ライブラリ</div></a>
   <br />
-  <% @books.each do |b| %>
-    <!--<div class="library alert" id="<%= b.id %>"><p style="word-break: break-all;"><a onclick="return(false);"><%= b.title %></a></p></div>-->
-    <a onclick="book_show(<%= b.id %>);"><div class="library alert" id="<%= b.id %>"><p style="word-break: break-all;"><%= b.title %></p></div></a>
-  <% end %>
+  <%# @books.each do |b| %>
+    <!--<div class="library alert" id="<%#= b.id %>"><p style="word-break: break-all;"><a onclick="return(false);"><%#= b.title %></a></p></div>-->
+    <!--<a onclick="book_show(<%#= b.id %>);"><div class="library alert" id="<%#= b.id %>"><p style="word-break: break-all;"><%#= b.title %></p></div></a>-->
+  <%# end %>
+  <!--
 </ul>
+-->
 
 <div id="book-new"></div>
 
@@ -21,9 +51,16 @@
 
     //リストメニューハイライト
     $(libraries).each(function() {
-      $(this).removeClass("alert-success");
+      if ($(this).attr("id") == id) {
+        $(this).removeClass("books");
+        $('#'+id).addClass("books-active");
+      } else {
+        $(this).removeClass("books-active");
+        $(this).addClass("books");
+      }
     });
-    $('#'+id).addClass("alert-success");
+    //$('#'+id).addClass("alert-success");
+    //$('#'+id).addClass("books-active");
 
     //books#showの読み込み
     //book_show(id);
