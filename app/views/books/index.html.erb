@@ -21,12 +21,12 @@
 </style>
 
 <h3>単語帳一覧 <a href="#myModal" data-toggle="modal"><i class="icon icon-plus-sign"></i></a></h3>
-  <a onclick="return false;"><div class="library books-active" id="0">ライブラリ</div></a>
-  <div id="sortable">
-    <% @books.each do |b| %>
-      <div id="<%= b.id %>" class="library books"><a onclick="return false;"><p style="word-break: break-all;"><%= b.title %></p></a></div>
-    <% end %>
-  </div>
+<a onclick="return false;"><div class="library books-active" id="<%= @library.id %>"><%= @library.title %></div></a>
+<div id="sortable">
+  <% @books.each do |b| %>
+    <div id="<%= b.id %>" class="library books"><a onclick="return false;"><p style="word-break: break-all;"><%= b.title %></p></a></div>
+  <% end %>
+</div>
 
 <div id="book-new"></div>
 

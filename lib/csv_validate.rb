@@ -30,7 +30,6 @@ class CsvValidate
     words = []
     @csv.each do |c|
       next unless format_check(c)
-      #p(">>>>>>>> #{format_check(c)} : #{c[0]}");
       words << Word.new(:word => c[0], :answer => c[1], :user_id => user.id)
     end
     words

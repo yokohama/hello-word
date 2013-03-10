@@ -7,10 +7,10 @@ class Api::BooksController < ApplicationController
     @user = User.find_by_email user[:email]
     if @user
       if @user.valid_password? user[:password]
-        books = [Book.library_new(@user)]
+        books = []
         words = []
-        logger.info("@user=#{@user.inspect}")
-        logger.info("books=#{@user.books.inspect}")
+        #logger.info("@user=#{@user.inspect}")
+        #logger.info("books=#{@user.books.inspect}")
         @user.books.each do |b|
           books << b
         end

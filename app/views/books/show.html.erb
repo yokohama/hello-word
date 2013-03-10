@@ -16,8 +16,8 @@
       $(this).tab('show');
     })
 
-    word_index(<%= @book ? @book.id : 0 %>);
-    book_edit(<%= @book ? @book.id : 0 %>);
+    word_index(<%= @book ? @book.id : @library.id %>);
+    book_edit(<%= @book ? @book.id : @library.id %>);
   })
 
   function word_index(id) {

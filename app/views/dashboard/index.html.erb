@@ -8,7 +8,7 @@
 <script>
   $(function () {
     book_index();
-    book_show(0);
+    book_show(<%= @book.id %>);
   })
 
   function book_index() {

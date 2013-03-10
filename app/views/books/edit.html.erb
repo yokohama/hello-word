@@ -22,6 +22,11 @@
     <button type="button" class="btn btn-primary" onclick="book_update(<%= @book.id %>);">変更</button>
     <button type="button" class="btn btn-danger" onclick="book_destroy(<%= @book.id %>);">単語帳の削除</button>
   </div>
+  <%#=  form_for(@book, :url => book_path) do |f| %>
+    <%#= avatar_for(@book) %>
+      <%#= f.label :cover %>
+    <%#= f.file_field :cover %>
+  <%# end %>
 <% end %>
 
 <script>

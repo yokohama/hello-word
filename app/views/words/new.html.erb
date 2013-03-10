@@ -1,16 +1,24 @@
 <div style="margin-bottom:40px;">
   <div id="word-new-message-area"></div>
-  <form id="word-new">
-    <fieldset>
-      <div>
-        <input type="text" id="inputWord" name="book[word]" placeholder="単語" class="input-span1" />
-      </div>
-      <div>
-        <textarea id="inputAnswer" name="book[answer]" placeholder="答え" class="input-span1" rows="3"></textarea>
-      </div>
-    </fieldset>
-  </form>
-  <button type="button" class="btn btn-primary pull-right" onclick="word_create(<%= @book.id %>);">単語の登録</button>
+  <% if @book.id.nil? %>
+    <div class="alert alert-info">
+      単語の追加は単語帳からおこなってください。
+    </div>
+  <% elsif @book.tolerance? %>
+    <form id="word-new">
+      <fieldset>
+        <div>
+          <input type="text" id="inputWord" name="book[word]" placeholder="単語" class="input-span1" />
+        </div>
+        <div>
+          <textarea id="inputAnswer" name="book[answer]" placeholder="答え" class="input-span1" rows="3"></textarea>
+        </div>
+      </fieldset>
+    </form>
+    <button type="button" class="btn btn-primary pull-right" onclick="word_create(<%= @book.id %>);">単語の登録</button>
+  <% else %>
+    <p class="alert alert-error">単語帳に登録できる単語は200個までです。新しい単語を登録するには、単語帳から単語を削除してください。</p>
+  <% end %>
 </div>
 
 <!--
@@ -19,7 +27,9 @@
   <span class="message">Drop images here to upload. <br /><i>(they will only be visible to you)</i></span>
 </div>
 -->
-<%= render partial:'file' %>
+<% if @book.tolerance? && !@book.id.nil? %>
+  <%= render partial:'file' %>
+<% end %>
 
 <script>
   function word_create(id) {

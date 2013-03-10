@@ -4,10 +4,10 @@ class WordsController < ApplicationController
   before_filter :authenticate_user!
 
   def index
-    if (params[:book_id].to_i == 0) 
-      @words = current_user.words
+    @book = current_user.books.find(params[:book_id])
+    if @book.library?
+      @words = current_user.words.find_all
     else
-      @book = current_user.books.find(params[:book_id])
       @words = @book.words
     end
   end
@@ -22,7 +22,7 @@ class WordsController < ApplicationController
 
   def new
     @word = Word.new
-    @book = params[:book_id].to_i == 0 ? Book.library_new(current_user) : current_user.books.find(params[:book_id])
+    @book = current_user.books.find(params[:book_id])
   end
 
   def edit
@@ -69,14 +69,11 @@ class WordsController < ApplicationController
       words << current_user.words.find(id)
     end
     
+    book = Book.find params[:book_id]
     words.each do |w|
-
-      #ライブラリの場合は、マスター削除
-      if params[:book_id].to_i == 0
+      if book.library? #ライブラリの場合は、マスター削除
         w.destroy
-
-      #Bookの場合は関連削除
-      else
+      else #Bookの場合は関連削除
         BookWord.where(book_id:params[:book_id], word_id:w.id).each {|_bw| _bw.destroy }
       end
     end
@@ -87,11 +84,8 @@ class WordsController < ApplicationController
   end
 
   def iframe
-    if params[:book_id].to_i == 0
-      @book = Book.library_new(current_user)
-    else
-      @book = current_user.books.find params[:book_id]
-    end
+    @book = current_user.books.find params[:book_id]
+    @words = @book.library? ? current_user.words.find_all : @book.words
   end
 
   def validation
@@ -102,13 +96,10 @@ class WordsController < ApplicationController
 
   def file_upload
     book = current_user.books.find params[:book_id]
-    book.words.each do |w|
-      #BUG:yokohama 関連も一緒に消す
-      w.destroy
-    end
     @cv = CsvValidate.new(params[:file])
-    @cv.to_words(current_user).each do |w|
-      book.words << w
+    new_record_count = Book::TOLERANCE - book.words.count
+    @cv.to_words(current_user).each_with_index do |w, i|
+      book.words << w if (i < new_record_count)
     end
     respond_to do |format|
       format.html{ head :no_content }
@@ -116,4 +107,3 @@ class WordsController < ApplicationController
   end
 
 end
-

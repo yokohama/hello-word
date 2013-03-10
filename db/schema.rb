@@ -21,11 +21,16 @@ ActiveRecord::Schema.define(:version => 20130209134747) do
   end
 
   create_table "books", :force => true do |t|
-    t.string   "title",      :null => false
-    t.integer  "user_id",    :null => false
+    t.string   "type"
+    t.string   "title",              :null => false
+    t.integer  "user_id",            :null => false
     t.integer  "display"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.string   "cover_file_name"
+    t.string   "cover_content_type"
+    t.integer  "cover_file_size"
+    t.datetime "cover_updated_at"
+    t.datetime "created_at",         :null => false
+    t.datetime "updated_at",         :null => false
   end
 
   create_table "samples", :force => true do |t|

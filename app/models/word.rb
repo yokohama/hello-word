@@ -8,5 +8,4 @@ class Word < ActiveRecord::Base
 
   #validates_length_of :word, :within => 1..40
   #validates_length_of :answer, :within => 1..255
-
 end

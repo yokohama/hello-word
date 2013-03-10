@@ -23,14 +23,14 @@
                 <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
                   <li><a href="#" onclick="word_all_checked(true)" >全て選択</a></li>
                   <li><a href="#" onclick="word_all_checked(false)">選択解除</a></li>
-                  <li><a href="#" onclick="word_destroy(<%= @book ? @book.id : 0 %>)">削除</a></li>
+                  <li><a href="#" onclick="word_destroy(<%= @book.id %>)">削除</a></li>
                 </ul>
               </div>
             </th>
           </tr>
         </thead>
       </table>
-      <iframe src="<%= iframe_book_words_path(:book_id => (@book ? @book.id : 0)) %>" width="100%" height="400px">
+      <iframe src="<%= iframe_book_words_path(:book_id => @book.id) %>" width="100%" height="400px">
       </iframe>
     </div>
     <div class="span5">
@@ -41,7 +41,7 @@
 
 <script>
   $(function () {
-    word_new(<%= @book ? @book.id : 0 %>);
+    word_new(<%= @book.id %>);
   });
 
   function word_new(id) {
